@@ -1,0 +1,23 @@
+{
+    "name": "barchart/lumen-static-framework",
+    "description": "(Mostly) static sites built on top of Lumen.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom Sisk",
+            "email": "tom.sisk@barchart.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "laravel/lumen-framework": "^5.4",
+        "vlucas/phpdotenv": "~2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Barchart\\LumenStatic\\": "src/Barchart/LumenStatic"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
