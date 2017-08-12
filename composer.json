@@ -1,5 +1,5 @@
 {
-    "name": "barchart/lumen-static-framework",
+    "name": "barchart/lumen-static-core",
     "description": "(Mostly) static sites built on top of Lumen.",
     "license": "MIT",
     "authors": [
