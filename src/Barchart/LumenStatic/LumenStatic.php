@@ -27,13 +27,11 @@ class LumenStatic extends Application
 
     protected function registerRoutes()
     {
-        if (file_exists($customRoutes = getcwd().'/../routes.php')) {
-            $this->group(['namespace' => 'App\Http\Controllers'], function ($app) {
+        $this->group(['namespace' => 'App\Http\Controllers'], function ($app) {
+            if (file_exists($customRoutes = getcwd().'/../routes.php')) {
                 require $customRoutes;
-            });
-        }
+            }
 
-        $this->group(['namespace' => 'Barchart\LumenStatic'], function ($app) {
             $app->get('{route:.*}', ['uses' => 'Controller@get']);
         });
     }
