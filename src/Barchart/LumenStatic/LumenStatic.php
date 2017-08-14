@@ -12,8 +12,32 @@ class LumenStatic extends Application
 
         parent::__construct($basePath);
 
+        $this->availableBindings = array_merge($this->availableBindings, [
+            'mailer' => 'registerMailBindings',
+            'Illuminate\Contracts\Mail\Mailer' => 'registerMailBindings',
+        ]);
+
         $this->registerDotEnv();
         $this->registerRoutes();
+    }
+
+    public function getConfigurationPath($name = null)
+    {
+        $path = parent::getConfigurationPath($name);
+
+        if (! $path) {
+            if (! $name) {
+                if (file_exists($path = __DIR__.'/../../../config/')) {
+                    return $path;
+                }
+            } else {
+                if (file_exists($path = __DIR__.'/../../../config/'.$name.'.php')) {
+                    return $path;
+                }
+            }
+        }
+
+        return $path;
     }
 
     protected function registerDotEnv()
@@ -33,6 +57,15 @@ class LumenStatic extends Application
             }
 
             $app->get('{route:.*}', ['uses' => 'Controller@get']);
+        });
+    }
+
+    protected function registerMailBindings()
+    {
+        $this->singleton('mailer', function () {
+            $this->configure('mail');
+
+            return $this->loadComponent('mail', 'Illuminate\Mail\MailServiceProvider', 'mailer');
         });
     }
 }
