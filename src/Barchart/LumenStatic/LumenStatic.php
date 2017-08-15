@@ -12,9 +12,16 @@ class LumenStatic extends Application
 
         parent::__construct($basePath);
 
+        $this->aliases['Illuminate\Session\SessionManager'] = 'session';
         $this->availableBindings = array_merge($this->availableBindings, [
+            'cookie' => 'registerCookieBindings',
+            'Illuminate\Contracts\Cookie\Factory' => 'registerCookieBindings',
+            'Illuminate\Contracts\Cookie\QueueingFactory' => 'registerCookieBindings',
             'mailer' => 'registerMailBindings',
             'Illuminate\Contracts\Mail\Mailer' => 'registerMailBindings',
+            'session' => 'registerSessionBindings',
+            'session.store' => 'registerSessionBindings',
+            'Illuminate\Session\SessionManager' => 'registerSessionBindings',
         ]);
 
         $this->registerDotEnv();
@@ -25,15 +32,17 @@ class LumenStatic extends Application
     {
         $path = parent::getConfigurationPath($name);
 
-        if (! $path) {
-            if (! $name) {
-                if (file_exists($path = __DIR__.'/../../../config/')) {
-                    return $path;
-                }
-            } else {
-                if (file_exists($path = __DIR__.'/../../../config/'.$name.'.php')) {
-                    return $path;
-                }
+        if (! $name) {
+            $appConfigDir = $this->basePath('config').'/';
+
+            if (! file_exists($appConfigDir) && file_exists($staticPath = __DIR__.'/../../../config/')) {
+                return $staticPath;
+            }
+        } else {
+            $appConfigPath = $this->basePath('config').'/'.$name.'.php';
+
+            if (! file_exists($appConfigPath) && file_exists($staticPath = __DIR__.'/../../../config/'.$name.'.php')) {
+                return $staticPath;
             }
         }
 
@@ -51,7 +60,7 @@ class LumenStatic extends Application
 
     protected function registerRoutes()
     {
-        $this->group(['namespace' => 'App\Http\Controllers'], function ($app) {
+        $this->group(['middleware' => \Illuminate\Session\Middleware\StartSession::class, 'namespace' => 'App\Http\Controllers'], function ($app) {
             if (file_exists($customRoutes = getcwd().'/../routes.php')) {
                 require $customRoutes;
             }
@@ -60,12 +69,42 @@ class LumenStatic extends Application
         });
     }
 
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerCookieBindings()
+    {
+        $this->singleton('cookie', function () {
+            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
     protected function registerMailBindings()
     {
         $this->singleton('mailer', function () {
-            $this->configure('mail');
-
             return $this->loadComponent('mail', 'Illuminate\Mail\MailServiceProvider', 'mailer');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerSessionBindings()
+    {
+        $this->singleton('session', function () {
+            return $this->loadComponent('session', 'Illuminate\Session\SessionServiceProvider');
+        });
+        $this->singleton('session.store', function () {
+            return $this->loadComponent('session', 'Illuminate\Session\SessionServiceProvider', 'session.store');
         });
     }
 }
