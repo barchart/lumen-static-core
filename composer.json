@@ -18,7 +18,10 @@
     "autoload": {
         "psr-4": {
             "Barchart\\LumenStatic\\": "src/Barchart/LumenStatic"
-        }
+        },
+        "files": [
+            "src/Barchart/LumenStatic/Support/helpers.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
