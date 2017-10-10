@@ -60,7 +60,7 @@ class LumenStatic extends Application
 
     protected function registerRoutes()
     {
-        $this->group(['middleware' => \Illuminate\Session\Middleware\StartSession::class, 'namespace' => 'App\Http\Controllers'], function ($app) {
+        $this->router->group(['middleware' => \Illuminate\Session\Middleware\StartSession::class, 'namespace' => 'App\Http\Controllers'], function ($app) {
             if (file_exists($customRoutes = getcwd().'/../routes.php')) {
                 require $customRoutes;
             }
