@@ -3,7 +3,7 @@
 namespace Barchart\LumenStatic\Foundation\Http\Middleware;
 
 use Closure;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
