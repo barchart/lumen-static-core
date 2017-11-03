@@ -1,6 +1,6 @@
 <?php
 
-namespace Illuminate\Foundation\Http\Middleware;
+namespace Barchart\LumenStatic\Foundation\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Application;
