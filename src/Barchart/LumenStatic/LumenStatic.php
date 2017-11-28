@@ -52,7 +52,7 @@ class LumenStatic extends Application
     protected function registerDotEnv()
     {
         try {
-            (new \Dotenv\Dotenv(getcwd().'/../'))->load();
+            (new \Dotenv\Dotenv(base_path()))->load();
         } catch (\Dotenv\Exception\InvalidPathException $e) {
             //
         }
