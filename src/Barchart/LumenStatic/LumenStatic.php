@@ -3,6 +3,7 @@
 namespace Barchart\LumenStatic;
 
 use Laravel\Lumen\Application;
+use Symfony\Component\Console\Input\ArgvInput;
 
 class LumenStatic extends Application
 {
@@ -51,8 +52,14 @@ class LumenStatic extends Application
 
     protected function registerDotEnv()
     {
+        $file = '.env';
+
+        if ($this->runningInConsole() && ($input = new ArgvInput)->hasParameterOption('--env')) {
+            $file .= '.'.$input->getParameterOption('--env');
+        }
+
         try {
-            (new \Dotenv\Dotenv(base_path()))->load();
+            (new \Dotenv\Dotenv(base_path(), $file))->load();
         } catch (\Dotenv\Exception\InvalidPathException $e) {
             //
         }
