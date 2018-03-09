@@ -31,3 +31,38 @@ if (! function_exists('csrf_token')) {
         throw new RuntimeException('Application session store not set.');
     }
 }
+
+if (! function_exists('app_url')) {
+    /**
+     * Generate a url for the application.
+     *
+     * @param  string  $path
+     * @param  mixed   $parameters
+     * @param  bool    $secure
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    function app_url($path = null, array $parameters = [])
+    {
+        $url = rtrim(env('APP_URL').'/'.ltrim($path, '/'), '/');
+
+        if ($parameters) {
+            $url .= '?'.http_build_query($parameters);
+        }
+
+        return $url;
+    }
+}
+
+if (! function_exists('app_route')) {
+    /**
+     * Generate application URL based on route name.
+     *
+     * @param  string  $path
+     * @param  mixed   $parameters
+     * @return string
+     */
+    function app_route($name, $parameters = [])
+    {
+        return str_replace(app('request')->root(), env('APP_URL'), route($name, $parameters));
+    }
+}
