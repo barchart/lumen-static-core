@@ -36,13 +36,13 @@ class LumenStatic extends Application
         if (! $name) {
             $appConfigDir = $this->basePath('config').'/';
 
-            if (! file_exists($appConfigDir) && file_exists($staticPath = __DIR__.'/../../../config/')) {
+            if (! file_exists($appConfigDir) && file_exists($staticPath = __DIR__.'/../config/')) {
                 return $staticPath;
             }
         } else {
-            $appConfigPath = $this->basePath('config').'/'.$name.'.php';
+            $appConfigPath = $this->basePath('config/'.$name.'.php');
 
-            if (! file_exists($appConfigPath) && file_exists($staticPath = __DIR__.'/../../../config/'.$name.'.php')) {
+            if (! file_exists($appConfigPath) && file_exists($staticPath = __DIR__.'/../config/'.$name.'.php')) {
                 return $staticPath;
             }
         }
