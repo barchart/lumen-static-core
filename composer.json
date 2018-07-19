@@ -17,10 +17,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Barchart\\LumenStatic\\": "src/Barchart/LumenStatic"
+            "Barchart\\LumenStatic\\": "src"
         },
         "files": [
-            "src/Barchart/LumenStatic/Support/helpers.php"
+            "src/Support/helpers.php"
         ]
     },
     "minimum-stability": "dev",
