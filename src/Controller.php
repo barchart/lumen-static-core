@@ -11,9 +11,9 @@ class Controller extends BaseController
     {
         $path = $request->path();
 
-        if (ends_with($path, '/index')) {
+        if (ends_with($path, 'index') || $path === 'index') {
             // Do not allow URL's that end in /index, as without it works.
-            return redirect(env('APP_URL').'/'.ltrim(str_replace('/index', '', $path), '/'), 301);
+            return redirect(rtrim(env('APP_URL').'/'.ltrim(substr($path, 0, -5), '/'), '/'), 301);
         }
 
         return view($this->getViewName($path));
