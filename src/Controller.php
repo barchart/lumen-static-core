@@ -9,7 +9,14 @@ class Controller extends BaseController
 {
     public function get(Request $request, $route = '')
     {
-        return view($this->getViewName($request->path()));
+        $path = $request->path();
+
+        if (ends_with($path, '/index')) {
+            // Do not allow URL's that end in /index, as without it works.
+            return redirect(env('APP_URL').'/'.ltrim(str_replace('/index', '', $path), '/'), 301);
+        }
+
+        return view($this->getViewName($path));
     }
 
     protected function getViewName($route)
@@ -24,7 +31,7 @@ class Controller extends BaseController
                 abort(404);
             }
         }
-        
+
         return $view;
     }
 }
