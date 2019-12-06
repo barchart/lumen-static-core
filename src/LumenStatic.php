@@ -58,11 +58,9 @@ class LumenStatic extends Application
             $file .= '.'.$input->getParameterOption('--env');
         }
 
-        try {
-            (new \Dotenv\Dotenv(base_path(), $file))->load();
-        } catch (\Dotenv\Exception\InvalidPathException $e) {
-            //
-        }
+        (new \Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+            base_path(), $file
+        ))->bootstrap();
     }
 
     protected function registerRoutes()

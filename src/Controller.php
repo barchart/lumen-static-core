@@ -2,6 +2,7 @@
 
 namespace Barchart\LumenStatic;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
@@ -11,7 +12,7 @@ class Controller extends BaseController
     {
         $path = $request->path();
 
-        if (ends_with($path, 'index') || $path === 'index') {
+        if (Str::endsWith($path, 'index') || $path === 'index') {
             // Do not allow URL's that end in /index, as without it works.
             return redirect(rtrim(env('APP_URL').'/'.ltrim(substr($path, 0, -5), '/'), '/'), 301);
         }
@@ -25,7 +26,7 @@ class Controller extends BaseController
 
         // If view does not exist, try the index view if it has not been attempted already.
         if (! view()->exists($view)) {
-            if (! ends_with($view, 'index')) {
+            if (! Str::endsWith($view, 'index')) {
                 return $this->getViewName($route.'/index');
             } else {
                 abort(404);
